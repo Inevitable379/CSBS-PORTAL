@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSBS Portal | Computer Science with Business Systems</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<script>
+    // Redirect to login.html if not logged in
+    document.addEventListener('DOMContentLoaded', function() {
+        const userEmail = sessionStorage.getItem('userEmail');
+        if (!userEmail) {
+            window.location.href = 'login.html';
+        }
+    });
+</script>
+
+<div id="welcome-modal">
+    <div style="font-size: 3rem;">👋</div>
+    <h2 id="welcome-title" style="color: #1e293b; margin: 10px 0;">Good Morning!</h2>
+    <p id="welcome-user" style="color: #64748b; font-size: 1.2rem;"></p>
+</div>
+<div id="main-app-container">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h1>CSBS Portal</h1>
+        </div>
+        
+        <div class="sidebar-nav">
+            <a href="#" class="nav-item active" data-target="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-target="modules">
+                <i class="fas fa-cubes"></i>
+                <span>Course Modules</span>
+            </a>
+            <a href="#" class="nav-item" data-target="syllabus">
+                <i class="fas fa-book"></i>
+                <span>Syllabus</span>
+            </a>
+            <a href="#" class="nav-item" data-target="assignments">
+                <i class="fas fa-tasks"></i>
+                <span>Assignments</span>
+            </a>
+            <a href="#" class="nav-item" data-target="projects">
+                <i class="fas fa-project-diagram"></i>
+                <span>Projects</span>
+            </a>
+            <a href="#" class="nav-item" data-target="exams">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Exam Schedule</span>
+            </a>
+            <a href="#" class="nav-item" data-target="attendance">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Attendance</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <p>CSBS Program &copy; 2023</p>
+        </div>
+    </div>
+    
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Content Header -->
+        <div class="content-header">
+            <h2><i class="fas fa-home"></i> Dashboard</h2>
+            <div class="user-info">
+                <div class="user-avatar">CS</div>
+                <div>
+                    <div style="font-weight: 600;">Computer Science</div>
+                    <div style="font-size: 0.9rem; color: var(--gray);">with Business Systems</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section active">
+            <p class="section-description">Welcome to your CSBS Portal. Here you can access all your course materials, assignments, and academic information in one place.</p>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value">11</div>
+                    <div class="stat-label">Active Courses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Pending Assignments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">78.2%</div>
+                    <div class="stat-label">Average Attendance</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">14</div>
+                    <div class="stat-label">Days Until Finals</div>
+                </div>
+            </div>
+
+            <!-- Class Schedule Section -->
+            <div class="schedule-container">
+                <div class="schedule-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Class Schedule</h3>
+                    <div class="schedule-info">
+                        <div class="schedule-info-item">
+                            <i class="fas fa-user"></i>
+                            <span>Class Teacher: Prof. Udhay Kumar Singh</span>
+                        </div>
+                        <div class="schedule-info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Session: August 2025 - January 2026</span>
+                        </div>
+                    </div>
+                </div>
+                
+               <table class="schedule-table" id="dynamic-schedule">
+   <thead>
+    <tr>
+        <th class="time-header">Day</th>
+        <th>8:45-9:45</th>
+        <th>9:45-10:45</th>
+        <th style="background:#fef3c7; color:#92400e;">BREAK</th> <th>11:00-12:00</th>
+        <th>12:00-12:50</th>
+        <th style="background:#d1fae5; color:#065f46;">LUNCH</th> <th>1:50-2:50</th>
+        <th>2:50-3:50</th>
+    </tr>
+</thead>
+    <tbody>
+        </tbody>
+</table>
+            </div>
+        </div>
+        
+        <!-- Modules Section -->
+       <div id="modules" class="content-section">
+            <p class="section-description">Explore all the learning modules for your CSBS program.</p>
+            
+            <div class="modules-grid" id="modules-container">
+                <p style="padding: 20px; color: gray;">Loading modules from server...</p>
+            </div>
+        </div>
+        
+        <!-- Syllabus Section -->
+        <div id="syllabus" class="content-section">
+            <p class="section-description">Click on any subject to view the complete syllabus with detailed topics, lab practices, and pedagogy.</p>
+            
+            <div class="syllabus-content">
+                <div class="syllabus-card bounce-in" data-subject="BCSV-I">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>BCSV-I</h3>
+                    <p>Business Communication & Value Science - I</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="DMCS">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>DMCS</h3>
+                    <p>Discrete Mathematics for Computer Science</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="ITPSC">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>ITPSC</h3>
+                    <p>Statistics, Probability & Calculus</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="PHYSICS">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3>PHYSICS</h3>
+                    <p>Fundamentals of Physics</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="PEE">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>PEE</h3>
+                    <p>Principles of Electrical Engineering</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="IPS">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>IPS</h3>
+                    <p>Introduction to Problem Solving</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="IPS LAB">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>IPS LAB</h3>
+                    <p>Problem Solving Lab</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="PHYSICS LAB">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <h3>PHYSICS LAB</h3>
+                    <p>Physics Laboratory</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="PEE LAB">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3>PEE LAB</h3>
+                    <p>Electrical Engineering Lab</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="DSA">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>DSA</h3>
+                    <p>Data Structures using C</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="UHV">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>UHV</h3>
+                    <p>Universal Human Values</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+                
+                <div class="syllabus-card bounce-in" data-subject="IC">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>IC</h3>
+                    <p>Indian Constitution</p>
+                    <button class="btn"><i class="fas fa-eye"></i> View Syllabus</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Assignments Section -->
+        <div id="assignments" class="content-section">
+            <p class="section-description">Track all your assignments with due dates.</p>
+            <div id="assignments-container" class="assignments-container"></div>
+        </div>
+        
+        <!-- Projects Section -->
+        <div id="projects" class="content-section">
+            <p class="section-description">Submit your course projects and track their progress here.</p>
+            <div id="projects-container" class="assignments-container"></div>
+        </div>
+
+        <!-- Exam Schedule Section -->
+        <div id="exams" class="content-section">
+            <p class="section-description">View your upcoming exams and important academic dates.</p>
+            
+            <div class="exam-schedule">
+                <table class="exam-table">
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Exam Type</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exams-container">
+    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Attendance Section -->
+        <div id="attendance" class="content-section">
+            <p class="section-description">Search for your name to view your attendance record. Total classes: 115</p>
+            
+            <div class="attendance-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Attendance Alert:</strong> Students with attendance below 75% may face restrictions in appearing for exams. Please check your attendance regularly.
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" id="attendanceSearch" placeholder="Search by name or USN...">
+            </div>
+            
+            <div class="sort-controls">
+                <button class="sort-btn" id="sortByName">
+                    <i class="fas fa-sort-alpha-down"></i> Sort by Name
+                </button>
+                <button class="sort-btn" id="sortByAttendance">
+                    <i class="fas fa-sort-numeric-down"></i> Sort by Attendance
+                </button>
+                <button class="sort-btn" id="sortDefault">
+                    <i class="fas fa-sort"></i> Default Order
+                </button>
+            </div>
+            
+            <table class="attendance-table" id="attendanceTable">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>USN</th>
+                        <th>Name</th>
+                        <th>Classes Attended</th>
+                        <th>Attendance %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Attendance data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Syllabus Modal -->
+    <div class="syllabus-modal" id="syllabusModal">
+        <div class="syllabus-modal-content">
+            <div class="syllabus-modal-header">
+                <h2 id="modalSubject">Subject Syllabus</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="syllabus-modal-body" id="modalBody">
+                <!-- Syllabus content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/main.js"></script>
+</body>
+</html>

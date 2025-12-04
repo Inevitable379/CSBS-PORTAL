@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSBS Portal | Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0; padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .login-logo {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        h2 {
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        p {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+        #login-error {
+            color: #ef4444;
+            margin-top: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ef4444;
+            display: none;
+            font-weight: 600;
+        }
+    </style>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-logo"><i class="fas fa-laptop-code"></i></div>
+        <h2>CSBS Portal Login</h2>
+        <p>Secure Access for Authorized Students</p>
+
+        <div id="g_id_onload"
+             data-client_id="212930513958-1mh49c4j0l3sqjbsbq5b6q1o4oav139e.apps.googleusercontent.com"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_blue" data-text="continue_with" data-shape="pill" data-logo_alignment="left"></div>
+        
+        <p id="login-error"><i class="fas fa-lock"></i> Access Denied: You are not authorized.</p>
+    </div>
+
+    <script>
+        // Whitelist emails to authorize
+        const WHITELIST = [
+            "juug25btech11186@jainuniversity.ac.in",
+            "juug25btech12052@jainuniversity.ac.in",
+            "juug25btech12131@jainuniversity.ac.in",
+            "juug25btech12520@jainuniversity.ac.in",
+            "juug25btech13071@jainuniversity.ac.in",
+            "juug25btech13112@jainuniversity.ac.in",
+            "juug25btech13497@jainuniversity.ac.in",
+            "juug25btech13731@jainuniversity.ac.in",
+            "juug25btech14971@jainuniversity.ac.in",
+            "juug25btech15025@jainuniversity.ac.in",
+            "juug25btech16979@jainuniversity.ac.in",
+            "juug25btech17192@jainuniversity.ac.in",
+            "juug25btech17199@jainuniversity.ac.in",
+            "juug25btech19844@jainuniversity.ac.in",
+            "juug25btech19935@jainuniversity.ac.in",
+            "juug25btech22524@jainuniversity.ac.in",
+            "juug25btech22916@jainuniversity.ac.in",
+            "juug25btech23002@jainuniversity.ac.in",
+            "juug25btech23109@jainuniversity.ac.in",
+            "juug25btech23158@jainuniversity.ac.in",
+            "juug25btech23274@jainuniversity.ac.in",
+            "juug25btech23280@jainuniversity.ac.in",
+            "juug25btech23494@jainuniversity.ac.in",
+            "juug25btech23511@jainuniversity.ac.in",
+            "juug25btech23717@jainuniversity.ac.in",
+            "juug25btech24219@jainuniversity.ac.in",
+            "juug25btech24345@jainuniversity.ac.in",
+            "juug25btech24730@jainuniversity.ac.in",
+            "juug25btech24817@jainuniversity.ac.in",
+            "juug25btech25439@jainuniversity.ac.in",
+            "juug25btech25476@jainuniversity.ac.in",
+            "juug25btech25890@jainuniversity.ac.in",
+            "juug25btech26056@jainuniversity.ac.in",
+            "juug25btech26206@jainuniversity.ac.in",
+            "juug25btech26252@jainuniversity.ac.in",
+            "juug25btech26253@jainuniversity.ac.in",
+            "juug25btech26740@jainuniversity.ac.in",
+            "juug25btech26760@jainuniversity.ac.in",
+            "juug25btech26920@jainuniversity.ac.in",
+            "juug25btech27281@jainuniversity.ac.in",
+            "juug25btech27341@jainuniversity.ac.in",
+            "juug25btech27501@jainuniversity.ac.in",
+            "juug25btech27606@jainuniversity.ac.in",
+            "juug25btech27971@jainuniversity.ac.in",
+            "juug25btech28647@jainuniversity.ac.in",
+            "juug25btech28767@jainuniversity.ac.in",
+            "juug25btech28888@jainuniversity.ac.in",
+            "juug25btech28902@jainuniversity.ac.in",
+            "juug25btech28918@jainuniversity.ac.in",
+            "juug25btech29102@jainuniversity.ac.in",
+            "juug25btech29635@jainuniversity.ac.in",
+            "juug25btech29771@jainuniversity.ac.in",
+            "juug25btech30044@jainuniversity.ac.in",
+            "juug25btech30058@jainuniversity.ac.in",
+            "juug25btech30063@jainuniversity.ac.in",
+            "juug25btech30203@jainuniversity.ac.in",
+            "juug25btech30303@jainuniversity.ac.in",
+            "juug25btech30530@jainuniversity.ac.in",
+            "juug25btech30944@jainuniversity.ac.in"
+        ];
+
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwtResponse(response.credential);
+            const userEmail = responsePayload.email.toLowerCase().trim();
+
+            if (WHITELIST.includes(userEmail)) {
+                // Store login info in sessionStorage
+                sessionStorage.setItem('userEmail', userEmail);
+                sessionStorage.setItem('userName', responsePayload.name || "");
+                // Redirect to main portal page
+                window.location.href = "/";
+            } else {
+                const errorMsg = document.getElementById('login-error');
+                errorMsg.style.display = "block";
+                errorMsg.innerHTML = `<i class="fas fa-lock"></i> Access Denied: ${userEmail} is not authorized.`;
+            }
+        }
+
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+    </script>
+</body>
+</html>

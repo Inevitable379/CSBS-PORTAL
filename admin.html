@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f4f4f9; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        select, input, button { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #2563eb; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1d4ed8; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align:center;">Admin Dashboard</h2>
+
+    <label><strong>What do you want to add?</strong></label>
+    <select id="actionType" onchange="updateForm()">
+        <option value="assignments">Add Assignment</option>
+        <option value="projects">Add Project</option>
+        <option value="exams">Schedule Exam</option>
+        <option value="upload">Upload Module PDF</option>
+        <option value="announcement">Add Announcement</option>
+    </select>
+
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+    <form id="adminForm" method="POST" action="/add" enctype="application/x-www-form-urlencoded">
+        
+        <label>Subject Code</label>
+        <input list="subjects" name="subject_code" id="subjectCode" placeholder="e.g. DMCS" required onchange="updateTopics()">
+        <datalist id="subjects">
+            <option value="BCSV-I">
+            <option value="DMCS">
+            <option value="ITPSC">
+            <option value="PHYSICS">
+            <option value="PEE">
+            <option value="IPS">
+        </datalist>
+
+        <div id="textFields">
+            <label>Title / Description</label>
+            <input type="text" name="title" placeholder="e.g. Graph Theory Homework">
+            
+            <label>Date</label>
+            <input type="text" name="date" placeholder="e.g. 25th Nov 2025">
+            
+            <label>Status</label>
+            <input type="text" name="status" placeholder="e.g. Pending">
+        </div>
+
+        <div id="fileFields" class="hidden">
+            <label>Topic Name</label>
+            <select name="topic_name" id="topicName"></select>
+            <label>Select File</label>
+            <input type="file" name="file">
+        </div>
+
+        <div id="announcementFields" class="hidden">
+            <label>Announcement Message</label>
+            <textarea name="message" placeholder="Enter your announcement..."></textarea>
+            <label>Date</label>
+            <input type="text" name="date" placeholder="e.g. 25th Nov 2025">
+        </div>
+
+        <input type="hidden" name="category" id="categoryInput" value="assignments">
+
+        <label style="margin-top: 20px;">Admin Password</label>
+        <input type="password" name="password" required placeholder="Enter Password">
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    let courses = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/courses.json')
+            .then(response => response.json())
+            .then(data => {
+                courses = data;
+                updateTopics(); // Initial population
+            });
+    });
+
+    function updateTopics() {
+        const subjectCode = document.getElementById('subjectCode').value;
+        const topicSelect = document.getElementById('topicName');
+        topicSelect.innerHTML = ''; // Clear existing options
+
+        const course = courses.find(c => c.code === subjectCode);
+        if (course && course.topics) {
+            course.topics.forEach(topic => {
+                const option = document.createElement('option');
+                option.value = topic.name;
+                option.textContent = topic.name;
+                topicSelect.appendChild(option);
+            });
+        }
+    }
+
+    function updateForm() {
+        const type = document.getElementById('actionType').value;
+        const form = document.getElementById('adminForm');
+        const textF = document.getElementById('textFields');
+        const fileF = document.getElementById('fileFields');
+        const announcementF = document.getElementById('announcementFields');
+        const cat = document.getElementById('categoryInput');
+
+        textF.classList.add('hidden');
+        fileF.classList.add('hidden');
+        announcementF.classList.add('hidden');
+
+        if (type === 'upload') {
+            form.action = '/upload';
+            form.enctype = 'multipart/form-data'; // Required for files
+            fileF.classList.remove('hidden');
+        } else if (type === 'announcement') {
+            form.action = '/add_announcement';
+            form.enctype = 'application/x-www-form-urlencoded';
+            announcementF.classList.remove('hidden');
+            cat.value = type;
+        } else {
+            form.action = '/add';
+            form.enctype = 'application/x-www-form-urlencoded'; // Standard text
+            textF.classList.remove('hidden');
+            cat.value = type; // Sets 'assignments', 'projects', or 'exams'
+        }
+        updateTopics(); // Update topics when form type changes
+    }
+</script>
+
+</body>
+</html>
