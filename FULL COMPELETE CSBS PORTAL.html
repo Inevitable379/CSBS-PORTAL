@@ -2223,7 +2223,7 @@
             errorMsg.innerText = "Access Denied: Please use your Jain University email.";
             errorMsg.style.display = "block";
         }
-    }
+    
 
     // JWT Decoder Utility
     function decodeJwtResponse(token) {
@@ -2247,7 +2247,7 @@
         Papa.parse(SHEET_URL, {
             download: true,
             header: true,
-            skipEmpty   Lines: true,
+            skipEmptyLines: true,
             complete: function(results) {
                 console.log("Data loaded!", results.data); // Debug message
                 
@@ -2506,9 +2506,10 @@
                     if (!row.Name) return;
                     // Auto-detect columns
                     const percent = row.Percentage || row['Total %'] || row['Overall %'] || 0;
+                    const attended = row.Attended || row['Classes Attended'] || '-';
                     const tr = document.createElement("tr");
                     if (parseFloat(percent) < 75) tr.classList.add('low-attendance');
-                    tr.innerHTML = `<td>${index + 1}</td><td>${row.USN||'-'}</td><td>${row.Name}</td><td>${parseFloat(percent)}%</td><td>${parseFloat(percent)}%</td>`;
+                    tr.innerHTML = `<td>${index + 1}</td><td>${row.USN||'-'}</td><td>${row.Name}</td><td>${attended}</td><td>${parseFloat(percent)}%</td>`;
                     tableBody.appendChild(tr);
                 });
             }
@@ -2525,22 +2526,22 @@
         loadExams();
         loadSchedule();
         loadAttendance();
-    });
 
-    // Sidebar Navigation
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-            this.classList.add('active');
-            const targetId = this.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
-            
-            const headerText = this.querySelector('span').textContent;
-            const iconClass = this.querySelector('i').className;
-            const h2 = document.querySelector('.content-header h2');
-            if(h2) h2.innerHTML = `<i class="${iconClass}"></i> ${headerText}`;
+        // Sidebar Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+                this.classList.add('active');
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                const headerText = this.querySelector('span').textContent;
+                const iconClass = this.querySelector('i').className;
+                const h2 = document.querySelector('.content-header h2');
+                if(h2) h2.innerHTML = `<i class="${iconClass}"></i> ${headerText}`;
+            });
         });
     });
 

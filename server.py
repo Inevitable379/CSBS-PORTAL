@@ -14,7 +14,7 @@ UPLOAD_FOLDER = 'static/uploads'
 ADMIN_PASSWORD = "admin"
 
 DB_FILES = {
-    'modules': 'courses.json',
+    'modules': 'modules.json',
     'assignments': 'assignments.json',
     'projects': 'project.json',
     'exams': 'exam.json'
@@ -136,3 +136,7 @@ def serve_file(filename):
 if __name__ == '__main__':
     print("Restarting Server...")
     app.run(debug=True, port=5000)
+
+@app.route('/login.html')
+def serve_login():
+    return send_from_directory('.', 'login.html')
